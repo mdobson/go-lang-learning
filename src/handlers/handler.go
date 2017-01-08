@@ -31,7 +31,11 @@ func HandleGenerateKeyPair(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlePostGenerateKey(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Printf("foo: %s", r.PostForm)
+
 	body, err := ioutil.ReadAll(r.Body)
+
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "ERROR: %s\n", err.Error())
