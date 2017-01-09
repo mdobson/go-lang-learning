@@ -16,7 +16,7 @@ func New(target string) *Prox {
 	return &Prox{target: url, proxy: httputil.NewSingleHostReverseProxy(url)}
 }
 
-func (p *Prox) Handle(w http.ResponseWriter, r *http.Request) {
+func (p *Prox) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("X-GoProxy", "GoProxy")
 	p.proxy.ServeHTTP(w, r)
 }

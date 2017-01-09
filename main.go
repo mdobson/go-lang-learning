@@ -49,7 +49,7 @@ func main() {
 		}
 
 		p = proxy.New(m2["url"])
-		r.HandleFunc(m2["base_path"], p.Handle)
+		r.Handle(m2["base_path"], http.StripPrefix(m2["base_path"], p))
 	}
 
 	r.HandleFunc("/rand", handlers.HandleGenerateSig)
@@ -59,7 +59,7 @@ func main() {
 
 	r.HandleFunc("/keys/{id}", handlers.HandlePostGenerateKey).Methods("POST")
 
-	r.HandleFunc("/proxy", p.Handle)
+	r.Handle("/proxy", p)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
