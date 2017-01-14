@@ -2,3 +2,7 @@
 .vscode
 bin
 pkg
+main
+tmp
+source.env
+db/

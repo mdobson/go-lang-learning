@@ -5,6 +5,10 @@ import (
 	"hello"
 	"io/ioutil"
 	"net/http"
+	"persist"
+	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 func HandleBasicRequest(w http.ResponseWriter, r *http.Request) {
@@ -43,4 +47,27 @@ func HandlePostGenerateKey(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprintf(w, "ECHO: %s\n", string(body))
 	}
+}
+
+func HandleStoreKeyValue(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	keyValue := strings.Split(string(body), "=")
+	persist.Save(keyValue[0], keyValue[1])
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "OK: %s\n", string(body))
+}
+
+func HandleGetKeyValue(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	key := vars["key"]
+
+	keyValue, _ := persist.Get(key)
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "OK: %s\n", keyValue)
 }

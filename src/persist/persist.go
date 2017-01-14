@@ -20,6 +20,20 @@ func Save(key string, value string) error {
 	return nil
 }
 
+func Get(key string) (string, error) {
+	db, err := leveldb.OpenFile(dbPath, nil)
+	if err != nil {
+		return "", err
+	}
+
+	data, err := db.Get([]byte(key), nil)
+	if err != nil {
+		return "", err
+	}
+	defer db.Close()
+	return string(data), nil
+}
+
 //Delete something from db
 func Delete() error {
 	return errors.New("Not Implemented")

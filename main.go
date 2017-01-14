@@ -55,7 +55,9 @@ func main() {
 	r.HandleFunc("/rand", handlers.HandleGenerateSig)
 	r.HandleFunc("/foo", handlers.HandleFooRequest)
 	r.HandleFunc("/keys", handlers.HandleGenerateKeyPair)
-	r.HandleFunc("/", handlers.HandleBasicRequest)
+	r.HandleFunc("/storage", handlers.HandleStoreKeyValue).Methods("POST")
+	r.HandleFunc("/storage/{key}", handlers.HandleGetKeyValue)
+	//r.HandleFunc("/", handlers.HandleBasicRequest)
 
 	r.HandleFunc("/keys/{id}", handlers.HandlePostGenerateKey).Methods("POST")
 
